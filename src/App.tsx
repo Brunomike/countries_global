@@ -1,25 +1,48 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
+import { useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+
+import Header from './components/Header';
+import defaultTheme from './components/styles/theme';
+
+import GlobalStyles from './components/styles/Global';
+import { Container } from './components/styles/Container.styled';
+
+import Home from './containters/Home';
+import CountryDetail from './containters/CountryDetail';
 
 function App() {
+  let myTheme = localStorage.getItem("myTheme") || "dark";
+
+  const [userTheme, setUserTheme] = useState(myTheme);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  function handleChange(e: any) {
+    setSearchTerm(e.target.value);
+  }
+
+  function handleThemeSelection() {
+    let toggledTheme = myTheme === "light" ? "dark" : "light";
+    setUserTheme(toggledTheme);
+    localStorage.setItem("myTheme", toggledTheme);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+      <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles myTheme={userTheme} />
+        <Header currentTheme={userTheme} toggleTheme={handleThemeSelection} />
+        <Container>
+            <Routes>
+              <Route path='/' element={<Home searchTerm={searchTerm} handleChange={handleChange} userTheme={userTheme}/>}/>
+              <Route path='/:searchTerm' element={<CountryDetail userTheme={userTheme}/>}/>
+            
+            </Routes>
+        </Container>
+      </ThemeProvider>
+      </Router>
+    </>
   );
 }
 
