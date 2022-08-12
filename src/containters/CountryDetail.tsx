@@ -1,16 +1,23 @@
-import { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
 import { useParams } from "react-router";
-import { NavLink } from 'react-router-dom';
+import { NavLink,Navigate, useLocation } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { RootObject } from '../interfaces/Country';
 
-import { StyledCountryDetail, StyledBadge } from "../components/styles/CountryDetail.styled"
+import { StyledCountryDetail, StyledBadge, Spinner } from "../components/styles/CountryDetail.styled"
 import { InfoItem } from '../components/styles/Card.styled'
 
 interface Props {
   userTheme: string
+}
+
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 
@@ -19,21 +26,45 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
   const [country, setCountry] = useState<RootObject>();
   const [isLoading, setIsLoading] = useState(false)
 
+  let query = useQuery();
+
   useEffect(() => {
     setIsLoading(true);
-    axios.get(`https://restcountries.com/v3.1/name/${params.searchTerm}`)
-      .then(res => res.data[0])
-      .then(data => {
-        console.log({ remote: data });
-        setCountry(data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setIsLoading(false);
-      })
-    console.log({ country: country });
+    if (!query.get("border")) {
+      axios.get(`https://restcountries.com/v3.1/name/${params.searchTerm}`)
+        .then(res => res.data[0])
+        .then(data => {
+          setCountry(data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoading(false);
+        })
+    } else {      
+      axios.get(`https://restcountries.com/v3.1/alpha/${params.searchTerm}`)
+        .then(res => res.data[0])
+        .then(data => {
+          console.log(data);
+          
+          setCountry(data);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setIsLoading(false);
+        })
+    }
   }, []);
+
+  let languages = ""
+
+  if (country) {
+    Object.entries(country.languages).forEach(([key, value]) => {
+      languages += `${value}, `
+    })
+  }
+
 
 
   return (
@@ -47,13 +78,13 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
 
       {country && !isLoading ? (
         <div className='country__details'>
-          <img src="https://flagcdn.com/w320/kw.png" alt="" />
+          <img src={country.flags.png} alt="" />
           <div className='container'>
             <h1>{country.name.common}</h1>
             <div className='sections'>
               <div className='sectionOne'>
                 <InfoItem myTheme={userTheme}>
-                  <span>Native Name:</span>Belgie
+                  <span>Native Name:</span>{country.name.common}
                 </InfoItem>
                 <InfoItem myTheme={userTheme}>
                   <span>Population:</span>{country.population.toLocaleString("en-us")}
@@ -77,26 +108,28 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
                 </InfoItem>
                 <InfoItem myTheme={userTheme}>
                   <span>Languages:</span>
-                  {/* {country.languages[0]} */}
+                  {languages.trim().replace(/.$/, ".")}
                 </InfoItem>
+
               </div>
             </div>
             <div>
-              <InfoItem myTheme={userTheme}>
-                <span>Border Countries:</span>
-                {country.borders.map((border: string, index: number) => (
-                  <StyledBadge myTheme={userTheme}>{border}</StyledBadge>
-                ))}
-                <StyledBadge myTheme={userTheme}>France</StyledBadge>
-                <StyledBadge myTheme={userTheme}>Germany</StyledBadge>
-                <StyledBadge myTheme={userTheme}>Netherlands</StyledBadge>
-              </InfoItem>
+              {country.borders && (
+                <InfoItem myTheme={userTheme}>
+                  <span>Border Countries:</span>
+                  {country.borders.map((border: string, index: number) => (
+                    <NavLink to={`/${border}?border=true`} key={index}><StyledBadge myTheme={userTheme}>{border}</StyledBadge></NavLink>
+                  ))}
+                </InfoItem>
+              )}
             </div>
           </div>
         </div>
       )
         :
-        <p>Loading...</p>
+        <Spinner >
+          <div className='loader'></div>
+        </Spinner>
       }
 
     </StyledCountryDetail>

@@ -33,7 +33,7 @@ export const StyledSkeletonCard = styled.div<{ myTheme: string }>`
                 
         .country__name{
             height:1rem;
-            margin: 9px 0 12px 0;
+            margin: 16px 0 ;
             p{
                 font-size: 16px;
                 font-weight: 800;                

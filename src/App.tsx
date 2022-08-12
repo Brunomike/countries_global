@@ -15,11 +15,7 @@ function App() {
   let myTheme = localStorage.getItem("myTheme") || "dark";
 
   const [userTheme, setUserTheme] = useState(myTheme);
-  const [searchTerm, setSearchTerm] = useState("");
-
-  function handleChange(e: any) {
-    setSearchTerm(e.target.value);
-  }
+  
 
   function handleThemeSelection() {
     let toggledTheme = myTheme === "light" ? "dark" : "light";
@@ -35,7 +31,7 @@ function App() {
         <Header currentTheme={userTheme} toggleTheme={handleThemeSelection} />
         <Container>
             <Routes>
-              <Route path='/' element={<Home searchTerm={searchTerm} handleChange={handleChange} userTheme={userTheme}/>}/>
+              <Route path='/' element={<Home userTheme={userTheme}/>}/>
               <Route path='/:searchTerm' element={<CountryDetail userTheme={userTheme}/>}/>
             
             </Routes>

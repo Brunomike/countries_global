@@ -29,6 +29,8 @@ export const StyledHeader = styled.header<{ myTheme: string }>`
         }
         svg{
             color: ${({ myTheme, theme }) => myTheme === "dark" ? theme.colors.dark.textColor : theme.colors.light.textColor};
+            max-width: 16px;
+            max-height: 16px;
         }
 
         p{

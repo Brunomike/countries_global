@@ -2,23 +2,24 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { StyledCard, InfoItem } from "./styles/Card.styled";
 
-import {Country} from '../interfaces/Country'
+import {RootObject} from '../interfaces/Country'
+
 
 interface Props {
   theme: string
-  country: Country
+  country: RootObject
 }
 
 const Card: FC<Props> = ({ theme, country }: Props) => {
   
   return (
-  <Link to={`${country.name}`} style={{textDecoration:"none"}}>
+  <Link to={`${country.name.common.toLowerCase()}`} style={{textDecoration:"none"}}>
     <StyledCard myTheme={theme} className="country">
-      <img src={country.imageUrl} alt="Country" className="country__image"/>
+      <img src={country.flags.png} alt="Country" className="country__image"/>
 
       <div className="country__info">
         <div className="country__name">
-          <p>{country.name}</p>
+          <p>{country.name.common}</p>
         </div>
         <div>
         <InfoItem myTheme={theme}>

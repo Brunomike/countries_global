@@ -43,9 +43,6 @@ export const StyledCard = styled.div<{ myTheme: string }>`
     }
 `
 
-export const CountryInfos=styled.div`
-
-`
 
 export const InfoItem = styled.div<{myTheme:string}>`    
     display: flex;

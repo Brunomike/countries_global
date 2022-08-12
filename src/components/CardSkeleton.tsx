@@ -14,8 +14,8 @@ const CardSkeleton: FC<Props> = ({ userTheme }: Props) => {
                     <div className="country__name skeleton skeleton-text">
                     </div>
                     <div>
-                        <div className="skeleton skeleton-text"></div>
-                        <div className="skeleton skeleton-text"></div>
+                        <div className="skeleton skeleton-text" style={{marginBottom:"8px"}}></div>
+                        <div className="skeleton skeleton-text" style={{marginBottom:"8px"}}></div>
                         <div className="skeleton skeleton-text">                            
                         </div>
                     </div>
