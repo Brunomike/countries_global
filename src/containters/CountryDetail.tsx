@@ -44,9 +44,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
     } else {      
       axios.get(`https://restcountries.com/v3.1/alpha/${params.searchTerm}`)
         .then(res => res.data[0])
-        .then(data => {
-          console.log(data);
-          
+        .then(data => {          
           setCountry(data);
           setIsLoading(false);
         })
@@ -55,7 +53,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
           setIsLoading(false);
         })
     }
-  }, []);
+  }, [params.searchTerm]);
 
   let languages = ""
 
@@ -118,7 +116,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
                 <InfoItem myTheme={userTheme}>
                   <span>Border Countries:</span>
                   {country.borders.map((border: string, index: number) => (
-                    <NavLink to={`/${border}?border=true`} key={index}><StyledBadge myTheme={userTheme}>{border}</StyledBadge></NavLink>
+                    <NavLink to={`/${border}?border=true`} key={index} style={{marginBottom:"16px"}}><StyledBadge myTheme={userTheme}>{border}</StyledBadge></NavLink>
                   ))}
                 </InfoItem>
               )}
