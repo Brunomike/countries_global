@@ -4,7 +4,7 @@ import Card from "../components/Card";
 import CardSkeleton from "../components/CardSkeleton";
 import Dropdown from "../components/Dropdown";
 import Search from "../components/Search";
-import { Country, RootObject } from '../interfaces/Country';
+import {  RootObject } from '../interfaces/Country';
 
 
 interface Props {

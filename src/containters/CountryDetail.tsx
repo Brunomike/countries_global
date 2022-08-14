@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FC } from 'react';
 import axios from 'axios';
 import { useParams } from "react-router";
-import { NavLink,Navigate, useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 
 import { RootObject } from '../interfaces/Country';
@@ -53,7 +53,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
           setIsLoading(false);
         })
     }
-  }, [params.searchTerm]);
+  }, [params.searchTerm,query]);
 
   let languages = ""
 
