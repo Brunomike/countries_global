@@ -121,7 +121,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
                 </InfoItem>
               )}
             </div>
-          </div>
+          </div>         
         </div>
       )
         :
