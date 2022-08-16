@@ -1,4 +1,4 @@
-import { BrowserRouter as Router,Route,Routes } from 'react-router-dom';
+import {Route,Routes } from 'react-router-dom';
 import { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 
@@ -16,7 +16,6 @@ function App() {
 
   const [userTheme, setUserTheme] = useState(myTheme);
   
-
   function handleThemeSelection() {
     let toggledTheme = myTheme === "light" ? "dark" : "light";
     setUserTheme(toggledTheme);
@@ -24,20 +23,17 @@ function App() {
   }
 
   return (
-    <>
-      <Router>
+    <>      
       <ThemeProvider theme={defaultTheme}>
         <GlobalStyles myTheme={userTheme} />
         <Header currentTheme={userTheme} toggleTheme={handleThemeSelection} />
         <Container>
             <Routes>
               <Route path='/' element={<Home userTheme={userTheme}/>}/>
-              <Route path='/:searchTerm' element={<CountryDetail userTheme={userTheme}/>}/>
-            
+              <Route path='/:searchTerm' element={<CountryDetail userTheme={userTheme}/>}/>            
             </Routes>
         </Container>
-      </ThemeProvider>
-      </Router>
+      </ThemeProvider>      
     </>
   );
 }

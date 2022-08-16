@@ -22,16 +22,6 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        fetchCountries();
-    }, []);
-
-
-    function handleChange(e: any) {
-        setSearchTerm(e.target.value);
-        filterResults(e.target.value, true);
-    }
-
-    function fetchCountries() {
         setIsLoading(true);
         axios.get("https://restcountries.com/v3.1/all")
             .then(res => res.data)
@@ -45,6 +35,16 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
             .catch((err) => {
                 console.log(err);
             })
+    }, []);
+
+
+    function handleChange(e: any) {
+        setSearchTerm(e.target.value);
+        filterResults(e.target.value, true);
+    }
+
+    function fetchCountries() {
+
     }
 
     function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
