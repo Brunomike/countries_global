@@ -2,8 +2,6 @@ import { createGlobalStyle } from "styled-components";
 import defaultTheme from "./theme";
 
 const GlobalStyles = createGlobalStyle<{ myTheme: string }>`
-@import url('(https://fonts.google.com/specimen/Nunito+Sans');
-
 *{
     box-sizing: border-box;    
 }

@@ -1,7 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {RootObject} from "../../interfaces/Country";
 import defaultService from './defaultService';
 
-const initialState = {
+interface DefaultState{
+    countries:RootObject[];
+    isError: boolean;
+    isSuccess: boolean;
+    isLoading: boolean;
+    message: string;
+}
+
+const initialState:DefaultState = {
     countries: [],
     isError: false,
     isSuccess: false,
@@ -10,7 +19,7 @@ const initialState = {
 };
 
 
-const fetchCountries = createAsyncThunk('api/all', async (_, thunkAPI) => {
+export const fetchCountries = createAsyncThunk('api/all', async (_, thunkAPI) => {
     try {
         return await defaultService.getCountries();
     } catch (error: any) {
@@ -39,10 +48,9 @@ export const defaultSlice = createSlice({
             state.isSuccess = true
             state.countries = action.payload
         })
-        builder.addCase(fetchCountries.rejected, (state, action) => {
+        builder.addCase(fetchCountries.rejected, (state) => {
             state.isLoading = false
-            state.isError = true
-            state.countries = []
+            state.isError = true            
         })
     }
 })

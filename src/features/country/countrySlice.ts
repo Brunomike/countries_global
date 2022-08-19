@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import countryService from './countryService';
 import { RootObject } from '../../interfaces/Country';
 
-interface CountryState{
+interface CountryState {
     country?: RootObject;
     isError: boolean;
     isSuccess: boolean;
@@ -10,7 +10,7 @@ interface CountryState{
     message: string;
 }
 
-const initialState:CountryState = {
+const initialState: CountryState = {
     country: undefined,
     isError: false,
     isSuccess: false,
@@ -18,7 +18,7 @@ const initialState:CountryState = {
     message: ''
 };
 
-export const fetchCountryByName = createAsyncThunk('api/name', async (searchTerm, thunkAPI) => {
+export const fetchCountryByName = createAsyncThunk('api/name', async (searchTerm: string, thunkAPI) => {
     try {
         return await countryService.getCountryByName(searchTerm!);
     } catch (error: any) {
@@ -27,7 +27,7 @@ export const fetchCountryByName = createAsyncThunk('api/name', async (searchTerm
     }
 });
 
-export const fetchCountryByBorder = createAsyncThunk('api/border', async (searchTerm, thunkAPI) => {
+export const fetchCountryByBorder = createAsyncThunk('api/border', async (searchTerm: string, thunkAPI) => {
     try {
         return await countryService.getCountryByBorder(searchTerm!);
     } catch (error: any) {

@@ -1,12 +1,12 @@
-import React, {FC, useEffect} from 'react';
-import {useParams} from "react-router";
-import {NavLink, useLocation} from 'react-router-dom';
-import {FaArrowLeft} from 'react-icons/fa';
+import React, { FC, useEffect } from 'react';
+import { useParams } from "react-router";
+import { NavLink, useLocation } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
-import {fetchCountryByBorder, fetchCountryByName} from '../features/country/countrySlice';
-import {useAppDispatch, useAppSelector} from '../app/hooks'
-import {Spinner, StyledBadge, StyledCountryDetail} from "../components/styles/CountryDetail.styled"
-import {InfoItem} from '../components/styles/Card.styled'
+import { fetchCountryByBorder, fetchCountryByName } from '../features/country/countrySlice';
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { Spinner, StyledBadge, StyledCountryDetail } from "../components/styles/CountryDetail.styled"
+import { InfoItem } from '../components/styles/Card.styled'
 
 interface Props {
   userTheme: string
@@ -22,20 +22,19 @@ function useQuery() {
 const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
   const params = useParams();
 
-  const { country, isLoading, isSuccess } = useAppSelector((state) => state.country);
-  const dispatch=useAppDispatch()
+  const { country, isLoading } = useAppSelector((state) => state.country);
+  const dispatch = useAppDispatch()
 
   let query = useQuery();
 
+
   useEffect(() => {
     if (!query.get("border")) {
-      // @ts-ignore
-      dispatch(fetchCountryByName(params.searchTerm));
+      dispatch(fetchCountryByName(params.searchTerm!));
     } else {
-      // @ts-ignore
-      dispatch(fetchCountryByBorder(params.searchTerm))
+      dispatch(fetchCountryByBorder(params.searchTerm!));
     }
-  }, [params.searchTerm, query]);
+  }, [params.searchTerm, query, dispatch]);
 
   let languages = ""
 

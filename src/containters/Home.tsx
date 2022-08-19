@@ -1,11 +1,12 @@
 import React, { useState, useEffect, FC } from "react";
-import axios from "axios";
+
+import { RootObject } from '../interfaces/Country';
+import { fetchCountries } from '../features/default/defaultSlice';
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import Card from "../components/Card";
 import CardSkeleton from "../components/CardSkeleton";
 import Dropdown from "../components/Dropdown";
 import Search from "../components/Search";
-import {  RootObject } from '../interfaces/Country';
-
 
 interface Props {
     userTheme: string
@@ -13,71 +14,64 @@ interface Props {
 
 const myArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
-
 const Home: FC<Props> = ({ userTheme }: Props) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [countries, setCountries] = useState([]);
-    const [filter, setFilter] = useState("all");
-    const [filteredCountries, setFilteredCountries] = useState([])
+    const [isFilterLoading, setIsFilterLoading] = useState(false);
+    // const [countries, setCountries] = useState([]);
+    let selectedFilter = localStorage.getItem('filter') || 'all';
+
+    const [filter, setFilter] = useState(selectedFilter);
+
+    const [filteredCountries, setFilteredCountries] = useState<RootObject[]>([])
     const [searchTerm, setSearchTerm] = useState("");
 
+    const dispatch = useAppDispatch();
+    const { countries, isLoading, isSuccess } = useAppSelector((state) => state.countries);
+
     useEffect(() => {
-        setIsLoading(true);
-        axios.get("https://restcountries.com/v3.1/all")
-            .then(res => res.data)
-            .then(data => {
-                setCountries(data);
+        dispatch(fetchCountries());
 
-                filter !== "all" ? filterResults(filter, false) : setFilteredCountries(data);
-
-                setIsLoading(false);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, []);
+        if (isSuccess) {
+            setFilteredCountries(countries);
+            filter !== "all" && filterResults(filter, false)
+        }
+    }, [dispatch, isSuccess, filter]);
 
 
-    function handleChange(e: any) {
+
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setSearchTerm(e.target.value);
         filterResults(e.target.value, true);
     }
 
-    function fetchCountries() {
-
-    }
-
     function handleFilterChange(e: React.ChangeEvent<HTMLInputElement>) {
-        filterResults(e.target.value);
+        setIsFilterLoading(true);
+        filterResults(e.target.value, false);
         setFilter(e.target.value);
+        localStorage.setItem('filter', e.target.value);
+        setIsFilterLoading(false);
     }
 
-    function filterResults(filterValue: string, country?: boolean) {
+    function filterResults(filterValue: string, country: boolean) {
         if (!country) {
             if (filterValue === "all") {
-                setIsLoading(true);
                 setFilteredCountries(countries);
-                setIsLoading(false);
             } else {
-                setIsLoading(true);
                 const allCountries = [...countries];
                 const filteredCountries = allCountries.filter((country: RootObject) => country.region.toLowerCase() === filterValue);
 
                 setFilteredCountries(filteredCountries);
-                setIsLoading(false);
             }
         } else {
-            setIsLoading(true);
             const allCountries = [...countries];
             const filteredCountries = allCountries.filter((country: RootObject) => country.name.common.toLowerCase().includes(filterValue))
 
             setFilteredCountries(filteredCountries);
-            setIsLoading(false);
         }
     }
 
 
-    if (isLoading) {
+    if (isLoading || isFilterLoading) {
         return (
             <>
                 <div className='search'>
@@ -101,10 +95,12 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
                 <Dropdown theme={userTheme} filter={filter} handleChange={handleFilterChange} />
             </div>
             <div className="countries">
-                {filteredCountries.length > 0 && !isLoading &&
+                {filteredCountries.length > 0 && !isLoading && !isFilterLoading ?
                     filteredCountries.map((country, index) => (
                         <Card key={index} theme={userTheme} country={country} />
                     ))
+                    :
+                    <p style={{ color: userTheme === "dark" ? "white" : "black" }}>No countries found!</p>
                 }
 
             </div>
@@ -112,4 +108,4 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
     )
 }
 
-export default Home
+export default Home;

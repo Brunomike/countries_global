@@ -8,7 +8,8 @@ export const StyledCard = styled.div<{ myTheme: string }>`
     border-radius: 4px;    
     display: flex;
     flex-direction: column;
-    box-shadow: 4px 2px 13px 2px rgb(0 0 0 / 10%);
+    //box-shadow: 4px 2px 13px 2px rgb(0 0 0 / 10%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 
     &:hover{
         cursor: pointer;
