@@ -26,10 +26,7 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
 
     const dispatch = useAppDispatch();
     const { countries, isLoading, isSuccess} = useAppSelector((state) => state.countries);
-
-
-    //const getLongestName=useMemo(()=>findLongestName(data),[data])
-
+    
     const filterResults = useCallback((filterValue: string, country: boolean) => {
         if (!country) {
             if (filterValue === "all") {
