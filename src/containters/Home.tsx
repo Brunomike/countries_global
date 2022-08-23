@@ -25,8 +25,8 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const dispatch = useAppDispatch();
-    const { countries, isLoading, isSuccess} = useAppSelector((state) => state.countries);
-    
+    const { countries, isLoading, isSuccess } = useAppSelector((state) => state.countries);
+
     const filterResults = useCallback((filterValue: string, country: boolean) => {
         if (!country) {
             if (filterValue === "all") {
@@ -41,7 +41,7 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
             const allCountries = [...countries];
             const filteredCountries = allCountries.filter((country: RootObject) => country.name.common.toLowerCase().includes(filterValue))
             setFilteredCountries(filteredCountries);
-        }                
+        }
     }, [countries]);
 
     useEffect(() => {
@@ -50,10 +50,10 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
 
     useEffect(() => {
         if (isSuccess) {
-            filterResults(filter, false);            
+            filterResults(filter, false);
         }
     }, [filterResults, filter, isSuccess]);
- 
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(e.target.value);
@@ -84,6 +84,9 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
             </>
         )
     }
+    if (filteredCountries.length === 0) {
+        <p style={{ color: userTheme === "dark" ? "white" : "black" }}>No countries found!</p>
+    }
 
     return (
         <>
@@ -92,12 +95,10 @@ const Home: FC<Props> = ({ userTheme }: Props) => {
                 <Dropdown theme={userTheme} filter={filter} handleChange={handleFilterChange} />
             </div>
             <div className="countries">
-                {filteredCountries.length > 0 && !isLoading && !isFilterLoading ?
+                {filteredCountries.length > 0 && !isLoading && !isFilterLoading &&
                     filteredCountries.map((country, index) => (
                         <Card key={index} theme={userTheme} country={country} />
                     ))
-                    :
-                    <p style={{ color: userTheme === "dark" ? "white" : "black" }}>No countries found!</p>
                 }
 
             </div>
