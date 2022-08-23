@@ -60,9 +60,9 @@ export const StyledCountryDetail = styled.div<{ myTheme: string }>`
         .container{
             width: 100%;
             display: flex;
-            flex-direction:column;
-            justify-content: space-between;
+            flex-direction:column;            
             align-items: baseline;
+            gap: 8px;
 
             h1{
                 font-size: 16px;
@@ -88,6 +88,7 @@ export const StyledCountryDetail = styled.div<{ myTheme: string }>`
             }
 
             @media(max-width:${({ theme }) => theme.mobile}){
+                justify-content: space-between;
                 flex-direction: column;
                 gap: 16px;
             }

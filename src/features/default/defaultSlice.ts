@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import {RootObject} from "../../interfaces/Country";
+import { RootObject } from "../../interfaces/Country";
 import defaultService from './defaultService';
 
-interface DefaultState{
-    countries:RootObject[];
+interface DefaultState {
+    countries: RootObject[];
     isError: boolean;
     isSuccess: boolean;
     isLoading: boolean;
     message: string;
 }
 
-const initialState:DefaultState = {
+const initialState: DefaultState = {
     countries: [],
     isError: false,
     isSuccess: false,
@@ -37,6 +37,9 @@ export const defaultSlice = createSlice({
             state.isError = false;
             state.isSuccess = false;
             state.message = '';
+        },
+        filterByRegion: (state, region) => {
+
         }
     },
     extraReducers: (builder) => {
@@ -50,7 +53,7 @@ export const defaultSlice = createSlice({
         })
         builder.addCase(fetchCountries.rejected, (state) => {
             state.isLoading = false
-            state.isError = true            
+            state.isError = true
         })
     }
 })

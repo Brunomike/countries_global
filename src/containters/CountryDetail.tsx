@@ -36,12 +36,25 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
     }
   }, [params.searchTerm, query, dispatch]);
 
-  let languages = ""
+  let languages = "";
 
   if (country && country.languages) {
     Object.entries(country.languages).forEach(([key, value]) => {
       languages += `${value}, `
     })
+  }
+
+  let capital = "";
+
+  if (country && country.capital) {
+    if (country.capital.length > 0) {
+      country.capital.map(c => {
+        return capital += c + ', ';
+      })      
+    } else {
+      capital = country.capital[0];
+    }
+
   }
 
   return (
@@ -73,7 +86,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
                   <span>Sub Region:</span>{country.subregion}
                 </InfoItem>
                 <InfoItem myTheme={userTheme}>
-                  <span>Capital:</span>{country.capital}
+                  <span>Capital:</span>{capital.trim().replace(/.$/, ".")}
                 </InfoItem>
               </div>
               <div className='sectionTwo'>
