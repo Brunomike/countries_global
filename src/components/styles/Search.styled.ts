@@ -15,6 +15,7 @@ export const StyledSearch=styled.div<{myTheme:string}>`
         border: none;
         background: transparent;
         color: ${({ myTheme, theme }) => myTheme === "dark" ? theme.colors.dark.textColor : theme.colors.light.textColor};
+        flex-grow:1;
     }
 
     svg{

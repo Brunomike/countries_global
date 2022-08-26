@@ -53,8 +53,7 @@ const CountryDetail: FC<Props> = ({ userTheme }: Props) => {
       })      
     } else {
       capital = country.capital[0];
-    }
-
+    }    
   }
 
   return (
